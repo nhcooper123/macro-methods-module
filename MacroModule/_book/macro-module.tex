@@ -157,10 +157,9 @@ R.
 handouts}\label{datasets-and-practical-handouts}
 
 All datasets and practical handouts are available on GitHub at
-{[}\url{https://github.com/nhcooper123/TeachingMaterials/tree/master/MSc_Museum}{]}.
-It can be tricky to download data from GitHub if you don't know what
-you're doing and/or don't want to clone the entire repository so the
-materials are also available at this DropBox link: {[}{]}.
+{[}\url{https://github.com/nhcooper123/macro-methods-module}{]}. You can
+download the whole repository. Scripts as \texttt{.Rmd} files and the
+data are all available in the \texttt{MacroModule} folder.
 
 \section{How to use these materials}\label{how-to-use-these-materials}
 
@@ -224,8 +223,8 @@ These practicals fit into a broader module as follows.
   Critical thinking: Do you trust your methods?
 \end{itemize}
 
-Some of the lectures are also available on GitHub
-{[}\url{https://github.com/nhcooper123/TeachingMaterials/tree/master/MSc_Museum}{]}.
+Links to some of the lectures are also available
+\href{https://github.com/nhcooper123/TeachingMaterials/blob/master/MSc_Museum/Lectures/Lectures_README.md}{here}.
 
 \chapter{What you need to be able to do in R before you
 start}\label{what-you-need-to-be-able-to-do-in-r-before-you-start}
@@ -1023,14 +1022,14 @@ To do this for our Pokemon:
 ## Accumulation method: random, with 1000 permutations
 ## Call: specaccum(comm = pokemon.matrix, method = "random", permutations = 1000) 
 ## 
-##                                                                       
-## Sites    1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.00000
-## Richness 2.948000 5.242000 6.775000 7.806000 8.504000 8.991000 9.34400
-## sd       1.815652 1.707733 1.281412 0.945123 0.750031 0.674814 0.62774
+##                                                                        
+## Sites    1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000
+## Richness 3.084000 5.192000 6.720000 7.772000 8.444000 8.953000 9.307000
+## sd       1.888521 1.685817 1.274843 0.931065 0.735803 0.680628 0.631783
 ##                              
 ## Sites    8.000000 9.000000 10
-## Richness 9.605000 9.803000 10
-## sd       0.524643 0.397931  0
+## Richness 9.586000 9.804000 10
+## sd       0.543046 0.397167  0
 \end{verbatim}
 
 \begin{Shaded}
@@ -1563,8 +1562,6 @@ make some modifications.
 \end{Highlighting}
 \end{Shaded}
 
-For some reason this code breaks\ldots{}
-
 Finally let's plot the tree as a fan (\texttt{legend\ =\ 10} just
 spreads the legend out so it is readable).
 
@@ -1896,9 +1893,11 @@ Check everything loaded correctly:
 ##  $ SocialStatus   : int  2 2 2 2 2 2 2 2 2 2 ...
 \end{verbatim}
 
-As you can see, the data contains the following variables: Order,
-Family, Binomial, AdultBodyMass\_g, GestationLen\_d, HomeRange\_km2,
-MaxLongevity\_m, and SocialGroupSize.
+As you can see, the data contains the following variables:
+\texttt{Order}, \texttt{Family}, \texttt{Binomial},
+\texttt{AdultBodyMass\_g}, \texttt{GestationLen\_d},
+\texttt{HomeRange\_km2}, \texttt{MaxLongevity\_m}, and
+\texttt{SocialGroupSize}.
 
 \subsection{Reading and checking your phylogeny in
 R}\label{reading-and-checking-your-phylogeny-in-r}
@@ -1952,11 +1951,20 @@ Let's examine the tree by typing:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# It's usually a good idea to quickly plot the tree too}
+\CommentTok{# Increase the margins so the plot looks better}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
 \KeywordTok{plot}\NormalTok{(primatetree, }\DataTypeTok{cex =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{typ =} \StringTok{"fan"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-75-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-77-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Put the margins back to something sensible for graphs}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
 
 \texttt{primatetree} is a fully resolved tree with branch lengths. There
 are 226 species and 221 internal nodes.
@@ -1980,8 +1988,15 @@ polytomies with zero-length branches.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primatetree <-}\StringTok{ }\KeywordTok{multi2di}\NormalTok{(primatetree)}
+
+\CommentTok{# Check this is now TRUE}
+\KeywordTok{is.binary.tree}\NormalTok{(primatetree)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
 
 Most functions also require the tree to be rooted, i.e., to have one
 taxon designated as the outgroup. Our tree is rooted but if you wanted
@@ -1992,11 +2007,18 @@ be the root.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{primatetree.reroot <-}\StringTok{ }\KeywordTok{root}\NormalTok{(primatetree, }\StringTok{"Saimiri_sciureus"}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
 \KeywordTok{plot}\NormalTok{(primatetree.reroot, }\DataTypeTok{cex =} \FloatTok{0.2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-78-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-80-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Manipulating your data and phylogeny in
 R}\label{manipulating-your-data-and-phylogeny-in-r}
@@ -2061,9 +2083,9 @@ the tree but not in the dataset, and \texttt{data\_not\_tree} for
 species in the dataset but not in the tree.
 
 We can remove species missing from the tree easily using
-\texttt{drop.tip} as we did above. You need to list the species which
-you do \textbf{not} want to select and then drop them from the tree
-instead of selecting the species you do want.
+\texttt{drop.tip}. You need to list the species which you do
+\textbf{not} want to select and then drop them from the tree instead of
+selecting the species you do want.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2135,25 +2157,30 @@ Before we use phylogenetic comparative methods, we will quickly do an
 ordinary least squares (OLS) regression. Let's assume that we're
 interested in the relationship between primate body mass and gestation
 length. First we should look at the data. Note that both variables are
-highly skewed so we need to log transform them. Also note that the
-function \texttt{log} in R is actually natural log, not log10. And for
-fun let's make everything rainbow colored!
+highly skewed suggesting that we might need to log transform them. In
+fact, by log transforming the data, we are making the differences
+multiplicative, not additive. This helps to deal with the problem that a
+2g increase in body mass for an elephant, is quite different to a 2g
+increase in mass for a mouse, but a 2\% increase in body mass for both
+is more comparable. Also note that the function \texttt{log} in R is
+actually natural log, not log10. And for fun let's make everything
+rainbow colored!
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{# So we can see 4 plots at once}
 
 \CommentTok{# Raw data}
-\KeywordTok{hist}\NormalTok{(primatedata$AdultBodyMass_g, }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{))}
-\KeywordTok{hist}\NormalTok{(primatedata$GestationLen_d, }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{))}
+\KeywordTok{hist}\NormalTok{(primatedata$AdultBodyMass_g, }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{), }\DataTypeTok{main =} \StringTok{""}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(primatedata$GestationLen_d, }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{), }\DataTypeTok{main =} \StringTok{""}\NormalTok{)}
 
 \CommentTok{# Log transformed}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{log}\NormalTok{(primatedata$AdultBodyMass_g), }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{))}
-\KeywordTok{hist}\NormalTok{(}\KeywordTok{log}\NormalTok{(primatedata$GestationLen_d), }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{))}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{log}\NormalTok{(primatedata$AdultBodyMass_g), }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{), }\DataTypeTok{main =} \StringTok{""}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{log}\NormalTok{(primatedata$GestationLen_d), }\DataTypeTok{col =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{8}\NormalTok{), }\DataTypeTok{main =} \StringTok{""}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-85-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-88-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2192,9 +2219,9 @@ adult body mass:
 ## F-statistic: 73.01 on 1 and 75 DF,  p-value: 1.097e-12
 \end{verbatim}
 
-The slope is positive (\texttt{0.1204\ ±\ 0.0141}), and very significant
-(note that R can't display values lower than \textless{}2e-16 which is
-why it shows up so often).
+The slope is positive (\texttt{0.1204\ ±\ 0.0141}), and highly
+significant (note that R can't display values lower than
+\textless{}2e-16 which is why it shows up so often).
 
 We can also plot the regression line on a scatter plot:
 
@@ -2205,18 +2232,19 @@ We can also plot the regression line on a scatter plot:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-87-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-90-1.pdf}
 
 We can look at the phylogenetic pseudoreplication problem on the graph
 by colouring the points by family.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primatedata, }\DataTypeTok{col =} \NormalTok{primatedata$Family, }\DataTypeTok{pch =} \DecValTok{16}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primatedata, }
+    \DataTypeTok{col =} \NormalTok{primatedata$Family, }\DataTypeTok{pch =} \DecValTok{16}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-88-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-91-1.pdf}
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
@@ -2226,9 +2254,9 @@ by colouring the points by family.
 There are several ways of accounting for phylogenetic non independence
 in your analyses. Here we will just cover one - phylogenetic generalized
 least squares (PGLS). Another popular earlier method is independent
-contrasts. This method is really similar to PGLS, in fact it is just a
-special kind of PGLS where \(\lambda\) is equal to 1. PGLS offers some
-important advantages over independent contrasts. The model of trait
+contrasts (PIC). This method is really similar to PGLS, in fact it is
+just a special kind of PGLS where \(\lambda\) is equal to 1. PGLS offers
+some important advantages over independent contrasts. The model of trait
 evolution can be more flexible i.e., it can depart from a strict
 Brownian motion process (\(\lambda\) or K = 1). Different scaling
 parameters (\(\lambda\), \(\kappa\), and \(\delta\)) can be incorporated
@@ -2283,7 +2311,8 @@ dropped species using:
 
 \textbf{Always} make sure you check the list of dropped species is what
 you expected, it often reveals typos in your species names, or
-mismatches in taxonomies used etc.
+mismatches in taxonomies used etc. Here of course we already fixed this
+problem, so nothing is listed.
 
 The function for PGLS analyses in \texttt{caper} is \texttt{pgls}. To
 fit a model which uses the Maximum Likelihood (ML) estimate of
@@ -2291,7 +2320,8 @@ fit a model which uses the Maximum Likelihood (ML) estimate of
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.pgls <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primate, }\DataTypeTok{lambda =} \StringTok{"ML"}\NormalTok{)}
+\NormalTok{model.pgls <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primate, }
+                   \DataTypeTok{lambda =} \StringTok{"ML"}\NormalTok{)}
 \KeywordTok{summary}\NormalTok{(model.pgls)}
 \end{Highlighting}
 \end{Shaded}
@@ -2347,7 +2377,7 @@ We can also plot the results as follows:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-92-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-95-1.pdf}
 
 Sometimes you will find that \texttt{pgls} will not work and you get an
 \texttt{optim\ error}. This is much more common when using a Mac. To fix
@@ -2358,7 +2388,8 @@ it works. For example:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.pgls2 <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primate, }\DataTypeTok{lambda =} \StringTok{"ML"}\NormalTok{, }\DataTypeTok{bounds =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lambda =} \KeywordTok{c}\NormalTok{(}\FloatTok{1e-05}\NormalTok{, }\DecValTok{1}\NormalTok{)))}
+\NormalTok{model.pgls2 <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primate,}
+                    \DataTypeTok{lambda =} \StringTok{"ML"}\NormalTok{, }\DataTypeTok{bounds =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lambda =} \KeywordTok{c}\NormalTok{(}\FloatTok{1e-05}\NormalTok{, }\DecValTok{1}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2375,7 +2406,7 @@ transformations in PGLS models using \texttt{pgls.profile}:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-94-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-97-1.pdf}
 
 This graph shows the likelihood profile of \(\lambda\) in our model.
 Ideally you want a line with an obvious peak/optimum like this, rather
@@ -2420,7 +2451,8 @@ not an option!
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.pgls3 <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }\DataTypeTok{data =} \NormalTok{primate, }\DataTypeTok{lambda =} \DecValTok{1}\NormalTok{)}
+\NormalTok{model.pgls3 <-}\StringTok{ }\KeywordTok{pgls}\NormalTok{(}\KeywordTok{log}\NormalTok{(GestationLen_d) ~}\StringTok{ }\KeywordTok{log}\NormalTok{(AdultBodyMass_g), }
+                    \DataTypeTok{data =} \NormalTok{primate, }\DataTypeTok{lambda =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2435,12 +2467,13 @@ diagnostic plots for PGLS:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{))}
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
 \KeywordTok{plot}\NormalTok{(model.pgls)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-97-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-100-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2601,13 +2634,15 @@ the randomized values to determine its significance.
 
 \begin{verbatim}
 ##           K PIC.variance.obs PIC.variance.rnd.mean PIC.variance.P
-## 1 0.7757771      0.001660764            0.01235346    0.000999001
+## 1 0.7757771      0.001660764            0.01220881    0.000999001
 ##   PIC.variance.Z
-## 1      -2.261165
+## 1      -2.179995
 \end{verbatim}
 
 In this case the observed K is significantly higher than the random
-values of K (\texttt{PIC.variance.P} \textless{} 0.001).
+values of K (\texttt{PIC.variance.P} \textless{} 0.001). (Click on the
+little black arrows to scroll left along the table if you're looking at
+this in RStudio).
 
 \emph{Note this is a randomization test so your output here will not be
 identical to mine.}
@@ -2779,10 +2814,10 @@ these steps are needed for.
 For some weird reason the \texttt{geiger} function we need
 (\texttt{treedata} see below) won't work if you input a dataset with
 variables that are characters i.e.~words or letters. Our taxonomic
-variable Species is a character so we need to exclude it from the data.
-Note for your own data you'd need to remove all character variables (or
-recode them as 0,12 etc.). We will do this by making a new dataset
-called magicaldata2.
+variable \texttt{Species} is a character so we need to exclude it from
+the data. Note for your own data you'd need to remove all character
+variables (or recode them as 0,1,2 etc.). We will do this by making a
+new dataset called \texttt{magicaldata2}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2790,11 +2825,12 @@ called magicaldata2.
 \end{Highlighting}
 \end{Shaded}
 
-Here the {[} {]} tells R we want to subset the dataset. R data frames
-are always described by {[}X,Y{]} where X is rows and Y is columns. So
-{[}1, 1{]} will select the entry in the first column and the first row
-of the data frame. {[}, 2:2{]} selects all rows but only columns 2 to 5.
-These are the columns containing our numeric variables.
+Here the \texttt{{[}\ {]}} tells R we want to subset the dataset. R data
+frames are always described by \texttt{{[}X,Y{]}} where \texttt{X} is
+rows and \texttt{Y} is columns. So \texttt{{[}1,\ 1{]}} will select the
+entry in the first column and the first row of the data frame.
+\texttt{{[},\ 2:5S{]}} selects all rows but only columns 2 to 5. These
+are the columns containing our numeric variables.
 
 We then need to match the species in tree to those in the dataset as in
 the PGLS practical. \textbf{Note that we are using \texttt{magicaldata2}
@@ -2821,11 +2857,11 @@ give the maximum likelihood (ML) estimates of the parameters. Bayesian
 methods are becoming preferred for these kinds of analyses and
 \texttt{fitContinuousMCMC} will perform these analyses. However, due to
 time constraints we will not cover this function. As an example, let's
-look at the evolution of \texttt{log(body\ size)} in magical creatures.
-We'll fit three evolutionary models -- the Brownian motion (BM) model,
-the Ornstein-Uhlenbeck (OU) model and the Early Burst (EB) model.
-\texttt{fitContinuous} can also fit several other models. For more
-details look at the help file by typing: \texttt{?fitContinuous}
+look at the evolution of \texttt{log(BodySize\_kg)} in magical
+creatures. We'll fit three evolutionary models -- the Brownian motion
+(BM) model, the Ornstein-Uhlenbeck (OU) model and the Early Burst (EB)
+model. \texttt{fitContinuous} can also fit several other models. For
+more details look at the help file by typing: \texttt{?fitContinuous}
 
 \subsection{The Brownian motion (BM
 model)}\label{the-brownian-motion-bm-model}
@@ -2871,8 +2907,8 @@ parameter \(\alpha\). The model has the following form:
 \(dX(t) = -\alpha(X(t) - \mu) + \sigma dW(t)\)
 
 Note that this model has two parameters in addition to those of the
-Brownian model, \(\alpha\) and \(\mu\). The parameter m is a long-term
-mean, and it is assumed that species evolve around this value.
+Brownian model, \(\alpha\) and \(\mu\). The parameter \(\mu\) is a
+long-term mean, and it is assumed that species evolve around this value.
 \(\alpha\) is the strength of evolutionary force that returns traits
 back towards the long-term mean if they evolve away from it. \(\alpha\)
 is sometimes referred to as the ``rubber band'' parameter because of the
@@ -2893,9 +2929,9 @@ Brownian.
 \subsection{The Early Burst (EB) model}\label{the-early-burst-eb-model}
 
 The Early Burst (EB) model (Harmon et al. 2010, also called the ACDC
-model; Blomberg et al. 2003) is a Brownian motion/random walk model
-where the rate of evolution decreases exponentially through time under
-the model:
+(accelerated/decelerated) model; Blomberg et al. 2003) is a Brownian
+motion/random walk model where the rate of evolution decreases
+exponentially through time under the model:
 
 \(r(t) = \sigma^2e(at)\)
 
@@ -3015,7 +3051,7 @@ To look at the output type:
 ## Convergence diagnostics:
 ##  optimization iterations = 100
 ##  failed iterations = 0
-##  frequency of best fit = 0.13
+##  frequency of best fit = 0.10
 ## 
 ##  object summary:
 ##  'lik' -- likelihood function
@@ -3053,7 +3089,7 @@ To look at the output type:
 ## GEIGER-fitted comparative model of continuous data
 ##  fitted 'EB' model parameters:
 ##  a = -0.000001
-##  sigsq = 2.208163
+##  sigsq = 2.208175
 ##  z0 = 4.304129
 ## 
 ##  model summary:
@@ -3065,7 +3101,7 @@ To look at the output type:
 ## Convergence diagnostics:
 ##  optimization iterations = 100
 ##  failed iterations = 0
-##  frequency of best fit = 0.54
+##  frequency of best fit = 0.59
 ## 
 ##  object summary:
 ##  'lik' -- likelihood function
@@ -3093,7 +3129,7 @@ model as follows:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 693145.7
+## [1] 693147.2
 \end{verbatim}
 
 For these data, the rate half-life is almost 700,000 time units, much
@@ -3378,8 +3414,8 @@ For some weird reason the \texttt{geiger} function we need
 variables that are characters i.e.~words or letters. Our taxonomic
 variable Species is a character so we need to exclude it from the data.
 Note for your own data you'd need to remove all character variables (or
-recode them as 0,12 etc.). We will do this by making a new dataset
-called magicaldata2.
+recode them as 0,1,2 etc.). We will do this by making a new dataset
+called \texttt{magicaldata2}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3387,11 +3423,12 @@ called magicaldata2.
 \end{Highlighting}
 \end{Shaded}
 
-Here the {[} {]} tells R we want to subset the dataset. R data frames
-are always described by {[}X,Y{]} where X is rows and Y is columns. So
-{[}1, 1{]} will select the entry in the first column and the first row
-of the data frame. {[}, 2:2{]} selects all rows but only columns 2 to 5.
-These are the columns containing our numeric variables.
+Here the \texttt{{[}\ {]}} tells R we want to subset the dataset. R data
+frames are always described by \texttt{{[}X,\ Y{]}} where \texttt{X} is
+rows and \texttt{Y} is columns. So \texttt{{[}1,\ 1{]}} will select the
+entry in the first column and the first row of the data frame.
+\texttt{{[},\ 2:5{]}} selects all rows but only columns 2 to 5. These
+are the columns containing our numeric variables.
 
 We then need to match the species in tree to those in the dataset as in
 the PGLS practical. \textbf{Note that we are using \texttt{magicaldata2}
@@ -3450,22 +3487,23 @@ same order as those in the tree.
 \NormalTok{social.colors <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"lightblue"}\NormalTok{, }\StringTok{"plum"}\NormalTok{)}
 
 \CommentTok{# Plot the tree, add coloured tip labels and a legend}
-\KeywordTok{plot}\NormalTok{(mytree, }\DataTypeTok{cex =} \FloatTok{0.5}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(mytree, }\DataTypeTok{cex =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{adj =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{))}
 \KeywordTok{tiplabels}\NormalTok{(}\DataTypeTok{pch =} \DecValTok{16}\NormalTok{, }\DataTypeTok{col =} \NormalTok{social.colors[mydata[,}\StringTok{"SocialStatus"}\NormalTok{]])}
 \KeywordTok{legend}\NormalTok{(}\StringTok{"bottomleft"}\NormalTok{,}\DataTypeTok{legend=}\KeywordTok{c}\NormalTok{(}\StringTok{"solitary"}\NormalTok{, }\StringTok{"social"}\NormalTok{), }
        \DataTypeTok{pch =} \DecValTok{15}\NormalTok{, }\DataTypeTok{col=}\KeywordTok{c}\NormalTok{(}\StringTok{"lightblue"}\NormalTok{, }\StringTok{"plum"}\NormalTok{), }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-124-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-129-1.pdf}
 
 You'll see that solitary behavior seems to be more restricted in its
-distribution. Most solitary magicals are bird or reptile like. From the
-distribution on the phylogeny, we might guess that solitary behavior is
-the ancestral state. This is exactly what we need to know in order to
-test whether evolutionary modes for body size vary for solitary vs
-social magical creatures. But before we can infer ancestral states, we
-need to chose the most appropriate model of social evolution.
+distribution. Most solitary magical creatures are bird or reptile like.
+From the distribution on the phylogeny, we might guess that solitary
+behavior is the ancestral state. This is exactly what we need to know in
+order to test whether evolutionary modes for body size vary for solitary
+vs social magical creatures. But before we can infer ancestral states,
+we need to chose the most appropriate model of social evolution.
 
 There are several ways of mapping social status onto the tree but
 probably the most straightforward is to use an ancestral state
@@ -3564,9 +3602,9 @@ Obviously, a symmetric model with only 2 states becomes an equal rates
 (ARD)}\label{mk-all-rates-different-ard}
 
 Finally, we can go crazy and allow all rates to be different. For
-S-states, this would generate \(S^2\) S rates FIXXXXXX, which might be
-crazy, depending on how many states you have. For completeness, the
-\(Q\) matrix for an All Rates Different model would look like this:
+S-states, this would generate \(S^2 - S\) rates which might be crazy,
+depending on how many states you have. For completeness, the \(Q\)
+matrix for an All Rates Different model would look like this:
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule
@@ -3692,7 +3730,7 @@ all-rates-different model:
 ## Convergence diagnostics:
 ##  optimization iterations = 100
 ##  failed iterations = 0
-##  frequency of best fit = 0.44
+##  frequency of best fit = 0.39
 ## 
 ##  object summary:
 ##  'lik' -- likelihood function
@@ -3782,7 +3820,8 @@ these states with pie charts on the tree we plotted earlier.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(mytree, }\DataTypeTok{cex =} \FloatTok{0.5}\NormalTok{)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(mytree, }\DataTypeTok{cex =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{adj =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{))}
 \KeywordTok{nodelabels}\NormalTok{(}\DataTypeTok{pie =} \NormalTok{asr$lik.anc, }\DataTypeTok{piecol =} \NormalTok{social.colors, }\DataTypeTok{cex =} \FloatTok{0.5}\NormalTok{)}
 \KeywordTok{tiplabels}\NormalTok{(}\DataTypeTok{pch =} \DecValTok{16}\NormalTok{, }\DataTypeTok{col =} \NormalTok{social.colors[mydata[,}\StringTok{"SocialStatus"}\NormalTok{]])}
 \KeywordTok{legend}\NormalTok{(}\StringTok{"bottomleft"}\NormalTok{,}\DataTypeTok{legend=}\KeywordTok{c}\NormalTok{(}\StringTok{"solitary"}\NormalTok{, }\StringTok{"social"}\NormalTok{), }
@@ -3790,7 +3829,7 @@ these states with pie charts on the tree we plotted earlier.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-131-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-136-1.pdf}
 
 We reconstruct mostly social as the ancestral state for magical
 creatures, but with multiple transitions to solitary behaviour. For our
@@ -3910,6 +3949,7 @@ information. Let's make it and look at the first few lines:
 \begin{Highlighting}[]
 \NormalTok{ouwie.data <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{species =} \KeywordTok{rownames}\NormalTok{(mydata), }\DataTypeTok{regime =} \NormalTok{mydata[ , }\StringTok{"SocialStatus"}\NormalTok{],}
 \DataTypeTok{trait =} \KeywordTok{log}\NormalTok{(mydata[ , }\StringTok{"BodySize_kg"}\NormalTok{]))}
+\CommentTok{# Look at the data}
 \KeywordTok{head}\NormalTok{(ouwie.data)}
 \end{Highlighting}
 \end{Shaded}
@@ -4086,7 +4126,17 @@ creatures. \texttt{alpha} is greater than zero suggesting that body size
 of magical creatures is evolving towards these optima.
 
 To find out which model best fits our data, we'll need to compute AIC
-weights again.
+weights again. Let's compare these more complex models to the simple BM,
+EB and OU models we built in the first half of the practical. The code
+below will fit these in case you've started a new session.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BM <-}\StringTok{ }\KeywordTok{fitContinuous}\NormalTok{(mytree, }\KeywordTok{log}\NormalTok{(mydata[,}\StringTok{"BodySize_kg"}\NormalTok{]), }\DataTypeTok{model =} \KeywordTok{c}\NormalTok{(}\StringTok{"BM"}\NormalTok{))}
+\NormalTok{OU <-}\StringTok{ }\KeywordTok{fitContinuous}\NormalTok{(mytree, }\KeywordTok{log}\NormalTok{(mydata[,}\StringTok{"BodySize_kg"}\NormalTok{]), }\DataTypeTok{model =} \KeywordTok{c}\NormalTok{(}\StringTok{"OU"}\NormalTok{))}
+\NormalTok{EB <-}\StringTok{ }\KeywordTok{fitContinuous}\NormalTok{(mytree, }\KeywordTok{log}\NormalTok{(mydata[,}\StringTok{"BodySize_kg"}\NormalTok{]), }\DataTypeTok{model =} \KeywordTok{c}\NormalTok{(}\StringTok{"EB"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4097,12 +4147,12 @@ weights again.
 \end{Shaded}
 
 \begin{verbatim}
-##                 fit       delta            w
-## BM         201.5837 52.25885489 2.160766e-12
-## OU         149.3528  0.02789568 4.746969e-01
-## EB         204.1283 54.80340245 6.054332e-13
-## BMvariable 154.1125  4.78764935 4.393888e-02
-## OUmulti    149.3249  0.00000000 4.813643e-01
+##                 fit     delta            w
+## BM         201.5837 52.854229 1.841181e-12
+## OU         148.7295  0.000000 5.523909e-01
+## EB         204.1283 55.398776 5.158876e-13
+## BMvariable 154.1125  5.383023 3.744018e-02
+## OUmulti    149.3249  0.595374 4.101689e-01
 \end{verbatim}
 
 Which is the best model overall?
@@ -4491,7 +4541,7 @@ the \emph{Tursiops truncatus} (specimen 8) specimens as follows.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-146-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-152-1.pdf}
 
 You can see that although both filled the screen when you were
 digitising, \emph{Tursiops} (in red) is much smaller. This is why this
@@ -4509,7 +4559,7 @@ of a mess.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-147-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-153-1.pdf}
 
 The skulls vary in their placement in each photo - in some they cover
 the whole area, in others they are further forward or sideways, some are
@@ -4566,7 +4616,7 @@ To do this in R we just need one line of code and the function
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-148-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-154-1.pdf}
 
 Note that now we have the average for each landmark as a large black
 point (the \textbf{centroid} - centroid just means the centre point of a
@@ -4613,7 +4663,7 @@ Let's extract principal components scores for our cetacean dataset using
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-149-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-155-1.pdf}
 This produces a plot of the first two principal components (PC1 and
 PC2), with dotted lines at the origin and each specimen represented by a
 point. Point 1 is \emph{Pseudorca}. Note that what we are now looking at
@@ -4656,7 +4706,7 @@ two fold to make them easier to see.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-150-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-156-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4847,7 +4897,7 @@ follows.
 ##  $ PC6      : num  -7.16e-05 -8.64e-03 5.17e-03 -2.21e-03 4.33e-03 ...
 ##  $ PC7      : num  0.000387 -0.003641 0.001733 0.004996 -0.003752 ...
 ##  $ PC8      : num  0.00 2.08e-17 2.06e-17 1.39e-17 2.99e-17 ...
-##  $ body.size: num  89.9 70.1 97.3 70.5 102.7 ...
+##  $ body.size: num  74.8 72 122.9 89.2 113.7 ...
 ##  $ diet     : Factor w/ 2 levels "fish","squid": 2 2 1 1 1 1 1 1
 \end{verbatim}
 
@@ -4866,7 +4916,7 @@ Regressions are done in the same way as usual.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-155-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-161-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4881,9 +4931,9 @@ Regressions are done in the same way as usual.
 ## Analysis of Variance Table
 ## 
 ## Response: PC1
-##           Df   Sum Sq   Mean Sq F value Pr(>F)
-## body.size  1 0.000962 0.0009617  0.0814  0.785
-## Residuals  6 0.070904 0.0118174
+##           Df   Sum Sq  Mean Sq F value Pr(>F)
+## body.size  1 0.011548 0.011548  1.1487  0.325
+## Residuals  6 0.060318 0.010053
 \end{verbatim}
 
 \begin{Shaded}
@@ -4900,16 +4950,16 @@ Regressions are done in the same way as usual.
 ## 
 ## Residuals:
 ##       Min        1Q    Median        3Q       Max 
-## -0.225665 -0.001519  0.024657  0.029528  0.128183 
+## -0.180141 -0.035511 -0.002061  0.066168  0.112456 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(>|t|)
-## (Intercept)  0.0453146  0.1634321   0.277    0.791
-## body.size   -0.0004722  0.0016552  -0.285    0.785
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept) -0.148839   0.143324  -1.038    0.339
+## body.size    0.001420   0.001325   1.072    0.325
 ## 
-## Residual standard error: 0.1087 on 6 degrees of freedom
-## Multiple R-squared:  0.01338,    Adjusted R-squared:  -0.1511 
-## F-statistic: 0.08138 on 1 and 6 DF,  p-value: 0.785
+## Residual standard error: 0.1003 on 6 degrees of freedom
+## Multiple R-squared:  0.1607, Adjusted R-squared:  0.0208 
+## F-statistic: 1.149 on 1 and 6 DF,  p-value: 0.325
 \end{verbatim}
 
 \begin{Shaded}
@@ -4920,7 +4970,7 @@ Regressions are done in the same way as usual.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-155-2.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-161-2.pdf}
 
 \begin{itemize}
 \tightlist
@@ -4957,8 +5007,8 @@ useful here.
 ## Analysis of Variance Table
 ## 
 ##             Df  Pillai approx F num Df den Df Pr(>F)
-## (Intercept)  1 0.00000  0.00000      2      5 1.0000
-## body.size    1 0.18938  0.58406      2      5 0.5916
+## (Intercept)  1 0.00000   0.0000      2      5 1.0000
+## body.size    1 0.33389   1.2531      2      5 0.3621
 ## Residuals    6
 \end{verbatim}
 
@@ -4984,7 +5034,7 @@ ANOVAs are done in the same way as usual.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-157-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-163-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5037,7 +5087,7 @@ ANOVAs are done in the same way as usual.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-157-2.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-163-2.pdf}
 
 \begin{itemize}
 \tightlist
@@ -5092,7 +5142,7 @@ assumption checking isn't possible for MANOVA in R at this time.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-158-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-164-1.pdf}
 
 \begin{itemize}
 \tightlist
@@ -5232,7 +5282,7 @@ huge oversimplification; we expect lots of changes in rates (or
 \textbf{rate heterogeneity}) through time, especially across fairly
 large trees. For example, we expect to see increases in speciation at
 points in time where a clade experiences an adaptive radiation,
-increases in extinction where the suddenly climate changes. BAMM
+increases in extinction where the climate suddenly changes. BAMM
 (Bayesian Analysis of Macroevolutionary Mixtures) deals with this issue
 by allowing rates to vary across the tree (Rabosky et al 2014ab, Rabosky
 2014).
@@ -5427,7 +5477,7 @@ outputs, so we can do this quite easily by looking at the
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-161-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-167-1.pdf}
 
 This gives us a vague idea of whether your run has converged. SPOILER
 alert, it has because I played around with the parameters in BAMM for
@@ -5546,7 +5596,7 @@ using \texttt{plot.bammdata}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-166-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-173-1.pdf}
 
 High rates are in red or yellow, and the low rates in blue. You can add
 the option \texttt{labels\ =\ TRUE} to get tip labels, but they're
@@ -5578,7 +5628,7 @@ favourite).
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-167-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-174-1.pdf}
 
 \section{Best single distinct shift
 configuration}\label{best-single-distinct-shift-configuration}
@@ -5613,7 +5663,7 @@ We can plot this as follows:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-169-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-176-1.pdf}
 
 The best single distinct shift configuration consists of three shifts.
 One on the branch leading to the marsupials, perhaps unsurprising given
@@ -5687,7 +5737,7 @@ using \texttt{plot.credibleshiftset}
 ## Omitted 104 plots
 \end{verbatim}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-171-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-178-1.pdf}
 
 The text above each phylorate plot gives the posterior probability of
 each shift configuration. Because many samples from the posterior can be
@@ -5826,7 +5876,7 @@ curve} using the \texttt{plotRateThroughTime} function.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-177-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-187-1.pdf}
 
 The red line is the average speciation rate, with density shading
 showing the confidence intervals.
@@ -5841,7 +5891,7 @@ at the macropodids (node 301):
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-178-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-188-1.pdf}
 
 And compare these to the phylogeny minus the macropodids:
 
@@ -5851,7 +5901,7 @@ And compare these to the phylogeny minus the macropodids:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-179-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-189-1.pdf}
 
 \section{Macroevolutionary cohort
 analysis}\label{macroevolutionary-cohort-analysis}
@@ -5875,7 +5925,7 @@ the \texttt{cohorts} function, which generates the plot.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-180-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-190-1.pdf}
 
 Each cell of the cohort matrix corresponds to a pair of tip taxa from
 the phylogeny. You read these plots by drawing an imaginary line between
@@ -5923,10 +5973,24 @@ You can (and should) check for this problem using the code below.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{macro-module_files/figure-latex/unnamed-chunk-181-1.pdf}
+\includegraphics{macro-module_files/figure-latex/unnamed-chunk-191-1.pdf}
 
 There is some overlap, but it's clear that the prior is different to the
 posterior, so this issue is not affecting our analyses.
+
+Thirdly, BAMM (and all other similar methods) gives inaccurate results
+for phylogenies with incomplete sampling, i.e.~where you don't have
+every species in your phylogeny. This may be quite likely if you're
+working with invertebrates or plants or pretty much anything other than
+mammals and birds! If the sampling is non random, for example, you're
+missing a whole clade, the results will be even weirder. BAMM has ways
+of dealing with this, but it's best to try and avoid the problem in the
+first place by only using BAMM where you've got a fairly complete
+phylogeny, or at least one where the missing species are missing at
+random. Rabosky and colleagues recommend that if \textless{}10\% of the
+species are in your phylogeny, you should add them in yourself. See
+{[}\url{http://bamm-project.org/advanced.html\#incompsampling}{]} for
+more help with this.
 
 Additionally, there has been a quite a lot of debate about the validity
 of BAMM in the literature recently. Moore et al. 2016 proposed several
@@ -5943,10 +6007,11 @@ serious issues with BAMM, which basically boil down to two main points:
 Rabosky and colleagues have refuted these criticisms here:
 {[}\url{http://bamm-project.org/prior.html}{]},
 {[}\url{http://bamm-project.org/replication.html}{]},
-{[}\url{http://bamm-project.org/developertoggle.html}{]} and
-{[}\url{http://bamm-project.org/mea_likelihood.html}{]}. There's no
-consensus just yet as to whether BAMM is usable or not. I would say use
-with caution, but be prepared to defend your choice!
+{[}\url{http://bamm-project.org/developertoggle.html}{]},
+{[}\url{http://bamm-project.org/mea_likelihood.html}{]}, and
+{[}\url{http://ift.tt/2m7qv6T}{]}. There's no consensus just yet as to
+whether BAMM is usable or not. I would say use with caution, but be
+prepared to defend your choice!
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
@@ -5973,6 +6038,10 @@ with caution, but be prepared to defend your choice!
   Macroevolutionary Dynamics: An Example from Australian Scincid
   Lizards. Syst Biol (2014) 63 (4): 610-627.
   {[}\url{https://doi.org/10.1093/sysbio/syu025}{]}.
+\item
+  Rabosky et al 2017. Is BAMM flawed? Theoretical and practical concerns
+  in the analysis of multi-rate diversification models. Syst Biol
+  {[}\url{http://ift.tt/2m7qv6T}{]}
 \item
   Shi \& Rabosky 2015. Speciation dynamics during the global radiation
   of extant bats. Evolution, 69: 1528-1545 {[}10.1111/evo.12681{]}.
@@ -6164,12 +6233,12 @@ papers.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  What is \(\lambda\) for primate social group size?
+  What is \(\lambda\) for Primate social group size?
 \item
   Make a plot of social group size against home range size.
 \item
-  Does home range size differ significantly among the different primate
-  genera?
+  Does home range size differ significantly among the different Primate
+  families?
 \item
   What is Blomberg's K for adult body mass?
 \item

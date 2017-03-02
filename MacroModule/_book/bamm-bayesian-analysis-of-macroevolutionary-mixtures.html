@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Practical notes for macro module" />
-  <meta name="github-repo" content="nhcooper123/TeachingMaterials/MSc_Museum/MacroModule" />
+  <meta name="github-repo" content="nhcooper123/macro-methods-module/MacroModule" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Methods in Macroecology and Macroevolution" />
@@ -298,7 +298,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="a-quick-intro-to-bamm" class="section level2">
 <h2><span class="header-section-number">9.1</span> A quick intro to BAMM</h2>
 <p>Often in evolutionary biology we are interested in how clades (and their traits) diversify. The simplest models for looking at this are birth death models, where there is a rate of speciation (birth) and a rate of extinction (death) and these combine to get a rate of diversification (speciation - extinction). If diversification rates are high we tend to find phylogenies with lots of species.</p>
-<p>The problem with these simple models is that they estimate a single rate of speciation and extinction across a whole tree. Obviously this is a huge oversimplification; we expect lots of changes in rates (or <strong>rate heterogeneity</strong>) through time, especially across fairly large trees. For example, we expect to see increases in speciation at points in time where a clade experiences an adaptive radiation, increases in extinction where the suddenly climate changes. BAMM (Bayesian Analysis of Macroevolutionary Mixtures) deals with this issue by allowing rates to vary across the tree (Rabosky et al 2014ab, Rabosky 2014).</p>
+<p>The problem with these simple models is that they estimate a single rate of speciation and extinction across a whole tree. Obviously this is a huge oversimplification; we expect lots of changes in rates (or <strong>rate heterogeneity</strong>) through time, especially across fairly large trees. For example, we expect to see increases in speciation at points in time where a clade experiences an adaptive radiation, increases in extinction where the climate suddenly changes. BAMM (Bayesian Analysis of Macroevolutionary Mixtures) deals with this issue by allowing rates to vary across the tree (Rabosky et al 2014ab, Rabosky 2014).</p>
 <p>More precisely, BAMM identifies <strong>discrete shifts in rate at nodes of a tree</strong> (either of speciation or of trait evolution, but we will focus on speciation here), i.e places where rates speed up or slow down. BAMM looks for rate shifts across the whole tree, so it can find 1, 2, 3 or more shifts. It does this using <em>reversible jump Markov Chain Monte Carlo</em> (i.e. Bayesian) methods to automatically explore a vast universe of possible models. It is biased towards simpler models (a common tactic in most evolutionary models - remember parsimony?) so rarely results in lots of rate shifts.</p>
 <p>For more information it is worth checking out the references at the end of this practical.</p>
 </div>
@@ -360,7 +360,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 mcmc &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;marsupial_mcmc_out.txt&quot;</span>)
 <span class="co"># Take a look at the plot</span>
 <span class="kw">plot</span>(mcmc$logLik ~<span class="st"> </span>mcmc$generation)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
 <p>This gives us a vague idea of whether your run has converged. SPOILER alert, it has because I played around with the parameters in BAMM for ages until it did!</p>
 <p>Again, as with Bayesian phylogenies, we next want to discard some runs as burnin. Let’s discard the first 10% of samples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">burnstart &lt;-<span class="st"> </span><span class="kw">floor</span>(<span class="fl">0.1</span> *<span class="st"> </span><span class="kw">nrow</span>(mcmc))
@@ -407,14 +407,14 @@ shifts</code></pre></div>
 <h2><span class="header-section-number">9.7</span> Mean phylorate plot</h2>
 <p>Next we might want to visualise these results on our tree. Mean phylorate plots are a way of visualizing the mean, model-averaged diversification rates along every branch of the tree. We can plot one using <code>plot.bammdata</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.bammdata</span>(edata, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">legend =</span> <span class="ot">TRUE</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-166-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
 <p>High rates are in red or yellow, and the low rates in blue. You can add the option <code>labels = TRUE</code> to get tip labels, but they’re really hard to read so you might need to look at a normal tree plot <code>plot(tree, cex = 0.5)</code> to see which species are involved here. I’ve provided a large PDF version of the tree in the folder. Also check out [<a href="https://en.wikipedia.org/wiki/Marsupial" class="uri">https://en.wikipedia.org/wiki/Marsupial</a>] to learn more about marsupials!</p>
 <p>In our data we see low rates in the monotremes (the three species in dark blue at the bottom) which is not surprising given their separation from the rest of the tree and very long branches. The two clades that appear to evolve more quickly are the Dasyuromorphia, the marsupial carnivores (including quolls and Tasmanian devils - though these are missing from this phylogeny), and the Macropodidae, the kangaroos and wallabies. Again this makes sense as these groups are very species rich. American possums, and other Australasian marsupials have much lower rates of evolution.</p>
 <p>We can also plot with slightly nicer colour-blind friendly colours from the package <code>viridis</code> (have a look at the options and choose your favourite).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(viridis)
 
 <span class="kw">plot.bammdata</span>(edata, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">pal =</span> <span class="kw">plasma</span>(<span class="dv">4</span>))</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
 </div>
 <div id="best-single-distinct-shift-configuration" class="section level2">
 <h2><span class="header-section-number">9.8</span> Best single distinct shift configuration</h2>
@@ -431,7 +431,7 @@ shifts</code></pre></div>
 <p>We can plot this as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.bammdata</span>(best, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">pal =</span> <span class="kw">plasma</span>(<span class="dv">4</span>))
 <span class="kw">addBAMMshifts</span>(best, <span class="dt">cex =</span> <span class="fl">1.5</span>, <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
 <p>The best single distinct shift configuration consists of three shifts. One on the branch leading to the marsupials, perhaps unsurprising given the low rates at the root with monotremes, and another two at the clades we already identified as having high rates.</p>
 </div>
 <div id="credible-sets-of-shifts" class="section level2">
@@ -467,7 +467,7 @@ shifts</code></pre></div>
 <p>We can generate phylorate plots for each of these shift configurations using <code>plot.credibleshiftset</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.credibleshiftset</span>(css)</code></pre></div>
 <pre><code>## Omitted 104 plots</code></pre>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
 <p>The text above each phylorate plot gives the posterior probability of each shift configuration. Because many samples from the posterior can be assigned to each distinct shift configuration, the phylorate plots generated by <code>plot.credibleshiftset</code> are model-averaged mean rate parameters across all samples assignable to a given configuration. The shifts themselves are indicated with circles on branches, with the circle size being related to the probability of that particular shift.</p>
 <p>Note: this will set the plotting window to plot 9 plots, so we need to take it back to the default of one plot using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
@@ -506,14 +506,14 @@ shifts</code></pre></div>
 <p>We may also want to visualise how rates of speciation change through time on our tree. We can do this by plotting a <strong>rate-through-time curve</strong> using the <code>plotRateThroughTime</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This may take some time...</span>
 <span class="kw">plotRateThroughTime</span>(edata, <span class="dt">ratetype =</span> <span class="st">&quot;speciation&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
 <p>The red line is the average speciation rate, with density shading showing the confidence intervals.</p>
 <p>You can also use <code>plotRateThroughTime</code> to plot speciation through time curves for just a portion of your phylogeny. Here we can just look at the macropodids (node 301):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotRateThroughTime</span>(edata, <span class="dt">node =</span> <span class="dv">301</span>, <span class="dt">nodetype=</span><span class="st">&quot;include&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
 <p>And compare these to the phylogeny minus the macropodids:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotRateThroughTime</span>(edata, <span class="dt">node =</span> <span class="dv">301</span>, <span class="dt">nodetype=</span><span class="st">&quot;exclude&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
 </div>
 <div id="macroevolutionary-cohort-analysis" class="section level2">
 <h2><span class="header-section-number">9.12</span> Macroevolutionary cohort analysis</h2>
@@ -521,7 +521,7 @@ shifts</code></pre></div>
 <p>First we generate a cohort matrix, which contains the pairwise probabilities of shared macroevolutionary dynamics. We then pass thsi to the <code>cohorts</code> function, which generates the plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmat &lt;-<span class="st"> </span><span class="kw">getCohortMatrix</span>(edata)
 <span class="kw">cohorts</span>(cmat, edata)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <p>Each cell of the cohort matrix corresponds to a pair of tip taxa from the phylogeny. You read these plots by drawing an imaginary line between any two tips of the tree - the color of the matrix at their intersection is the probability that those taxa share a common rate dynamic. Species pairs that share a common rate dynamic are red, species with different macroevolutionary dynamics are blue.</p>
 <p>Here there appear to be a very complicated set of macroevolutionary dynamics (again I wonder why I decided to use a completely untested real example for this practical!). Dasyurids and macropodids appear to be similar, as do the American possums and the Australasian possums. There are also small pockets of similarity across the other marsupial groups, for example bettongs have a similarly slow rate to the possums.</p>
 <p>Check out this <a href="http://bamm-project.org/bammgraph.html#whales-cohort">example with whales</a> for an easier to interpret plot!</p>
@@ -536,14 +536,15 @@ shifts</code></pre></div>
 bfmat &lt;-<span class="st"> </span><span class="kw">computeBayesFactors</span>(postfile, <span class="dt">expectedNumberOfShifts =</span> <span class="dv">1</span>, <span class="dt">burnin=</span><span class="fl">0.1</span>)
 
 <span class="kw">plotPrior</span>(mcmc, <span class="dt">expectedNumberOfShifts =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-191-1.png" width="672" /></p>
 <p>There is some overlap, but it’s clear that the prior is different to the posterior, so this issue is not affecting our analyses.</p>
+<p>Thirdly, BAMM (and all other similar methods) gives inaccurate results for phylogenies with incomplete sampling, i.e. where you don’t have every species in your phylogeny. This may be quite likely if you’re working with invertebrates or plants or pretty much anything other than mammals and birds! If the sampling is non random, for example, you’re missing a whole clade, the results will be even weirder. BAMM has ways of dealing with this, but it’s best to try and avoid the problem in the first place by only using BAMM where you’ve got a fairly complete phylogeny, or at least one where the missing species are missing at random. Rabosky and colleagues recommend that if &lt;10% of the species are in your phylogeny, you should add them in yourself. See [<a href="http://bamm-project.org/advanced.html#incompsampling" class="uri">http://bamm-project.org/advanced.html#incompsampling</a>] for more help with this.</p>
 <p>Additionally, there has been a quite a lot of debate about the validity of BAMM in the literature recently. Moore et al. 2016 proposed several serious issues with BAMM, which basically boil down to two main points:</p>
 <ul>
 <li>BAMM outputs are highly sensitive the priors</li>
 <li>The likelihood function BAMM uses is wrong</li>
 </ul>
-<p>Rabosky and colleagues have refuted these criticisms here: [<a href="http://bamm-project.org/prior.html" class="uri">http://bamm-project.org/prior.html</a>], [<a href="http://bamm-project.org/replication.html" class="uri">http://bamm-project.org/replication.html</a>], [<a href="http://bamm-project.org/developertoggle.html" class="uri">http://bamm-project.org/developertoggle.html</a>] and [<a href="http://bamm-project.org/mea_likelihood.html" class="uri">http://bamm-project.org/mea_likelihood.html</a>]. There’s no consensus just yet as to whether BAMM is usable or not. I would say use with caution, but be prepared to defend your choice!</p>
+<p>Rabosky and colleagues have refuted these criticisms here: [<a href="http://bamm-project.org/prior.html" class="uri">http://bamm-project.org/prior.html</a>], [<a href="http://bamm-project.org/replication.html" class="uri">http://bamm-project.org/replication.html</a>], [<a href="http://bamm-project.org/developertoggle.html" class="uri">http://bamm-project.org/developertoggle.html</a>], [<a href="http://bamm-project.org/mea_likelihood.html" class="uri">http://bamm-project.org/mea_likelihood.html</a>], and [<a href="http://ift.tt/2m7qv6T" class="uri">http://ift.tt/2m7qv6T</a>]. There’s no consensus just yet as to whether BAMM is usable or not. I would say use with caution, but be prepared to defend your choice!</p>
 <hr />
 </div>
 <div id="references-5" class="section level2">
@@ -554,6 +555,7 @@ bfmat &lt;-<span class="st"> </span><span class="kw">computeBayesFactors</span>(
 <li>Rabosky, 2014. Automatic Detection of Key Innovations, Rate Shifts, and Diversity-Dependence on Phylogenetic Trees. PLoS ONE. [<a href="http://dx.doi.org/10.1371/journal.pone.0089543" class="uri">http://dx.doi.org/10.1371/journal.pone.0089543</a>]</li>
 <li>Rabosky et al. 2014a. BAMMtools: an R package for the analysis of evolutionary dynamics on phylogenetic trees. Methods Ecol Evol, 5: 701-707 [10.1111/2041-210X.12199].</li>
 <li>Raboksy et al. 2014b. Analysis and Visualization of Complex Macroevolutionary Dynamics: An Example from Australian Scincid Lizards. Syst Biol (2014) 63 (4): 610-627. [<a href="https://doi.org/10.1093/sysbio/syu025" class="uri">https://doi.org/10.1093/sysbio/syu025</a>].</li>
+<li>Rabosky et al 2017. Is BAMM flawed? Theoretical and practical concerns in the analysis of multi-rate diversification models. Syst Biol [<a href="http://ift.tt/2m7qv6T" class="uri">http://ift.tt/2m7qv6T</a>]</li>
 <li>Shi &amp; Rabosky 2015. Speciation dynamics during the global radiation of extant bats. Evolution, 69: 1528-1545 [10.1111/evo.12681].</li>
 </ul>
 

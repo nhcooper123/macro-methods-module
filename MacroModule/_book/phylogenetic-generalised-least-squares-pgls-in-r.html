@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Practical notes for macro module" />
-  <meta name="github-repo" content="nhcooper123/TeachingMaterials/MSc_Museum/MacroModule" />
+  <meta name="github-repo" content="nhcooper123/macro-methods-module/MacroModule" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Methods in Macroecology and Macroevolution" />
@@ -321,7 +321,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  $ MaxLongevity_m : num  336 328 454 304 215 ...
 ##  $ SocialGroupSize: num  14.5 42 20 2.95 6.85 ...
 ##  $ SocialStatus   : int  2 2 2 2 2 2 2 2 2 2 ...</code></pre>
-<p>As you can see, the data contains the following variables: Order, Family, Binomial, AdultBodyMass_g, GestationLen_d, HomeRange_km2, MaxLongevity_m, and SocialGroupSize.</p>
+<p>As you can see, the data contains the following variables: <code>Order</code>, <code>Family</code>, <code>Binomial</code>, <code>AdultBodyMass_g</code>, <code>GestationLen_d</code>, <code>HomeRange_km2</code>, <code>MaxLongevity_m</code>, and <code>SocialGroupSize</code>.</p>
 </div>
 <div id="reading-and-checking-your-phylogeny-in-r" class="section level3">
 <h3><span class="header-section-number">5.1.3</span> Reading and checking your phylogeny in R</h3>
@@ -345,17 +345,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  - attr(*, &quot;class&quot;)= chr &quot;phylo&quot;
 ##  - attr(*, &quot;order&quot;)= chr &quot;cladewise&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It&#39;s usually a good idea to quickly plot the tree too</span>
+<span class="co"># Increase the margins so the plot looks better</span>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
 <span class="kw">plot</span>(primatetree, <span class="dt">cex =</span> <span class="fl">0.2</span>, <span class="dt">typ =</span> <span class="st">&quot;fan&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Put the margins back to something sensible for graphs</span>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>))</code></pre></div>
 <p><code>primatetree</code> is a fully resolved tree with branch lengths. There are 226 species and 221 internal nodes.</p>
 <p>Most R functions require your tree to be dichotomous, i.e. to have no polytomies. To check whether your tree is dichotomous use <code>is.binary.tree</code>. If this is FALSE, use <code>multi2di</code> to make the tree dichotomous. This function works by randomly resolving polytomies with zero-length branches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.binary.tree</span>(primatetree) <span class="co"># We want this to be TRUE</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primatetree &lt;-<span class="st"> </span><span class="kw">multi2di</span>(primatetree)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primatetree &lt;-<span class="st"> </span><span class="kw">multi2di</span>(primatetree)
+
+<span class="co"># Check this is now TRUE</span>
+<span class="kw">is.binary.tree</span>(primatetree)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 <p>Most functions also require the tree to be rooted, i.e., to have one taxon designated as the outgroup. Our tree is rooted but if you wanted to change the root, or root an unrooted tree use <code>root</code>. Note that here I’ve just chosen a random species <em>Saimiri sciureus</em> to be the root.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primatetree.reroot &lt;-<span class="st"> </span><span class="kw">root</span>(primatetree, <span class="st">&quot;Saimiri_sciureus&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
 <span class="kw">plot</span>(primatetree.reroot, <span class="dt">cex =</span> <span class="fl">0.2</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>))</code></pre></div>
 </div>
 <div id="manipulating-your-data-and-phylogeny-in-r" class="section level3">
 <h3><span class="header-section-number">5.1.4</span> Manipulating your data and phylogeny in R</h3>
@@ -374,7 +384,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>You can look at <code>check</code> by printing it, I won’t do this here as it produces a lot of output but take a look on your computer.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">check</code></pre></div>
 <p><code>check</code> has two parts, <code>tree_not_data</code> for species in the tree but not in the dataset, and <code>data_not_tree</code> for species in the dataset but not in the tree.</p>
-<p>We can remove species missing from the tree easily using <code>drop.tip</code> as we did above. You need to list the species which you do <strong>not</strong> want to select and then drop them from the tree instead of selecting the species you do want.</p>
+<p>We can remove species missing from the tree easily using <code>drop.tip</code>. You need to list the species which you do <strong>not</strong> want to select and then drop them from the tree instead of selecting the species you do want.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primatetree &lt;-<span class="st"> </span><span class="kw">drop.tip</span>(primatetree, check$tree_not_data)</code></pre></div>
 <p>In this case we don’t have any species in the tree missing from the data, <code>data_not_tree</code> contains no species. However, if you do, to remove species from the data which are not in the tree you can use <code>match</code> and <code>subset</code> as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matches &lt;-<span class="st"> </span><span class="kw">match</span>(primatedata$Binomial, check$data_not_tree, <span class="dt">nomatch =</span> <span class="dv">0</span>)
@@ -406,17 +416,17 @@ primatedata &lt;-<span class="st"> </span><span class="kw">subset</span>(primate
 </div>
 <div id="ordinary-least-squares-ols-regression" class="section level2">
 <h2><span class="header-section-number">5.2</span> Ordinary least squares (OLS) regression</h2>
-<p>Before we use phylogenetic comparative methods, we will quickly do an ordinary least squares (OLS) regression. Let’s assume that we’re interested in the relationship between primate body mass and gestation length. First we should look at the data. Note that both variables are highly skewed so we need to log transform them. Also note that the function <code>log</code> in R is actually natural log, not log10. And for fun let’s make everything rainbow colored!</p>
+<p>Before we use phylogenetic comparative methods, we will quickly do an ordinary least squares (OLS) regression. Let’s assume that we’re interested in the relationship between primate body mass and gestation length. First we should look at the data. Note that both variables are highly skewed suggesting that we might need to log transform them. In fact, by log transforming the data, we are making the differences multiplicative, not additive. This helps to deal with the problem that a 2g increase in body mass for an elephant, is quite different to a 2g increase in mass for a mouse, but a 2% increase in body mass for both is more comparable. Also note that the function <code>log</code> in R is actually natural log, not log10. And for fun let’s make everything rainbow colored!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="co"># So we can see 4 plots at once</span>
 
 <span class="co"># Raw data</span>
-<span class="kw">hist</span>(primatedata$AdultBodyMass_g, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>))
-<span class="kw">hist</span>(primatedata$GestationLen_d, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>))
+<span class="kw">hist</span>(primatedata$AdultBodyMass_g, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>), <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)
+<span class="kw">hist</span>(primatedata$GestationLen_d, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>), <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)
 
 <span class="co"># Log transformed</span>
-<span class="kw">hist</span>(<span class="kw">log</span>(primatedata$AdultBodyMass_g), <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>))
-<span class="kw">hist</span>(<span class="kw">log</span>(primatedata$GestationLen_d), <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>))</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<span class="kw">hist</span>(<span class="kw">log</span>(primatedata$AdultBodyMass_g), <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>), <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)
+<span class="kw">hist</span>(<span class="kw">log</span>(primatedata$GestationLen_d), <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">8</span>), <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># So we can go back to 1 plot</span></code></pre></div>
 <p>OK let’s do a linear regression of log gestation length against log adult body mass:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.ols &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primatedata)
@@ -439,19 +449,20 @@ primatedata &lt;-<span class="st"> </span><span class="kw">subset</span>(primate
 ## Residual standard error: 0.1977 on 75 degrees of freedom
 ## Multiple R-squared:  0.4933, Adjusted R-squared:  0.4865 
 ## F-statistic: 73.01 on 1 and 75 DF,  p-value: 1.097e-12</code></pre>
-<p>The slope is positive (<code>0.1204 ± 0.0141</code>), and very significant (note that R can’t display values lower than &lt;2e-16 which is why it shows up so often).</p>
+<p>The slope is positive (<code>0.1204 ± 0.0141</code>), and highly significant (note that R can’t display values lower than &lt;2e-16 which is why it shows up so often).</p>
 <p>We can also plot the regression line on a scatter plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primatedata)
 <span class="kw">abline</span>(model.ols)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 <p>We can look at the phylogenetic pseudoreplication problem on the graph by colouring the points by family.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primatedata, <span class="dt">col =</span> primatedata$Family, <span class="dt">pch =</span> <span class="dv">16</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primatedata, 
+    <span class="dt">col =</span> primatedata$Family, <span class="dt">pch =</span> <span class="dv">16</span>)</code></pre></div>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <hr />
 </div>
 <div id="phylogenetic-generalized-least-squares-models-pgls" class="section level2">
 <h2><span class="header-section-number">5.3</span> Phylogenetic generalized least squares models (PGLS)</h2>
-<p>There are several ways of accounting for phylogenetic non independence in your analyses. Here we will just cover one - phylogenetic generalized least squares (PGLS). Another popular earlier method is independent contrasts. This method is really similar to PGLS, in fact it is just a special kind of PGLS where <span class="math inline">\(\lambda\)</span> is equal to 1. PGLS offers some important advantages over independent contrasts. The model of trait evolution can be more flexible i.e., it can depart from a strict Brownian motion process (<span class="math inline">\(\lambda\)</span> or K = 1). Different scaling parameters (<span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\kappa\)</span>, and <span class="math inline">\(\delta\)</span>) can be incorporated in the analysis, which can significantly improve the fit of the data to the model and thus also improve the estimation of the trait correlation. Another advantage of PGLS is that the intercept of the regression is not forced to be zero.</p>
+<p>There are several ways of accounting for phylogenetic non independence in your analyses. Here we will just cover one - phylogenetic generalized least squares (PGLS). Another popular earlier method is independent contrasts (PIC). This method is really similar to PGLS, in fact it is just a special kind of PGLS where <span class="math inline">\(\lambda\)</span> is equal to 1. PGLS offers some important advantages over independent contrasts. The model of trait evolution can be more flexible i.e., it can depart from a strict Brownian motion process (<span class="math inline">\(\lambda\)</span> or K = 1). Different scaling parameters (<span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\kappa\)</span>, and <span class="math inline">\(\delta\)</span>) can be incorporated in the analysis, which can significantly improve the fit of the data to the model and thus also improve the estimation of the trait correlation. Another advantage of PGLS is that the intercept of the regression is not forced to be zero.</p>
 <p>To perform PGLS models in R, <code>caper</code> requires you to first combine the phylogeny and data into one object using the function <code>comparative.data</code>.</p>
 <p>Note that <code>vcv = TRUE</code> stores a variance covariance matrix of your tree (you will need this for the <code>pgls</code> function). <code>na.omit = FALSE</code> stops the function from removing species without data for all variables. <code>warn.dropped = TRUE</code> will tell you if any species are not in both the tree and the data and are therefore dropped from the comparative data object. Here we won’t drop any species because we already did this using <code>name.check</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primate &lt;-<span class="st"> </span><span class="kw">comparative.data</span>(<span class="dt">phy =</span> primatetree, <span class="dt">data =</span> primatedata, 
@@ -462,9 +473,10 @@ primatedata &lt;-<span class="st"> </span><span class="kw">subset</span>(primate
 <pre><code>## character(0)</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">primate$dropped$unmatched.rows</code></pre></div>
 <pre><code>## character(0)</code></pre>
-<p><strong>Always</strong> make sure you check the list of dropped species is what you expected, it often reveals typos in your species names, or mismatches in taxonomies used etc.</p>
+<p><strong>Always</strong> make sure you check the list of dropped species is what you expected, it often reveals typos in your species names, or mismatches in taxonomies used etc. Here of course we already fixed this problem, so nothing is listed.</p>
 <p>The function for PGLS analyses in <code>caper</code> is <code>pgls</code>. To fit a model which uses the Maximum Likelihood (ML) estimate of <span class="math inline">\(\lambda\)</span> we use the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primate, <span class="dt">lambda =</span> <span class="st">&quot;ML&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primate, 
+                   <span class="dt">lambda =</span> <span class="st">&quot;ML&quot;</span>)
 <span class="kw">summary</span>(model.pgls)</code></pre></div>
 <pre><code>## 
 ## Call:
@@ -498,29 +510,32 @@ primatedata &lt;-<span class="st"> </span><span class="kw">subset</span>(primate
 <p>We can also plot the results as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primatedata)
 <span class="kw">abline</span>(model.pgls)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
 <p>Sometimes you will find that <code>pgls</code> will not work and you get an <code>optim error</code>. This is much more common when using a Mac. To fix it all you need to do is change the bounds (upper and lower values) on the parameter being optimized, in this case <span class="math inline">\(\lambda\)</span>. Just change the lower bound of <span class="math inline">\(\lambda\)</span> to something a little bigger than 1e-6 until it works. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls2 &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primate, <span class="dt">lambda =</span> <span class="st">&quot;ML&quot;</span>, <span class="dt">bounds =</span> <span class="kw">list</span>(<span class="dt">lambda =</span> <span class="kw">c</span>(<span class="fl">1e-05</span>, <span class="dv">1</span>)))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls2 &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primate,
+                    <span class="dt">lambda =</span> <span class="st">&quot;ML&quot;</span>, <span class="dt">bounds =</span> <span class="kw">list</span>(<span class="dt">lambda =</span> <span class="kw">c</span>(<span class="fl">1e-05</span>, <span class="dv">1</span>)))</code></pre></div>
 <div id="likelihood-profiles-for-lambda-in-pgls-models" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> Likelihood profiles for <span class="math inline">\(\lambda\)</span> in PGLS models</h3>
 <p>You can look at the likelihood profiles for branch length transformations in PGLS models using <code>pgls.profile</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lambda.profile &lt;-<span class="st"> </span><span class="kw">pgls.profile</span>(model.pgls, <span class="st">&quot;lambda&quot;</span>)
 <span class="kw">plot</span>(lambda.profile)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 <p>This graph shows the likelihood profile of <span class="math inline">\(\lambda\)</span> in our model. Ideally you want a line with an obvious peak/optimum like this, rather than a flat line which would suggest <span class="math inline">\(\lambda\)</span> could be anything. You can see that the optimum (the peak of the curve) is at 0.892 as estimated in our PGLS model. The dotted red lines are the 95% confidence intervals on <span class="math inline">\(\lambda\)</span> for our model. <code>pgls.confint</code> prints out these numbers in <code>$ci.val</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pgls.confint</span>(model.pgls, <span class="st">&quot;lambda&quot;</span>)$ci.val</code></pre></div>
 <pre><code>## [1] 0.753434 0.966543</code></pre>
 <p><strong>Big problems with small datasets</strong> You will often find strange <span class="math inline">\(\lambda\)</span> profiles when you don’t have a lot of species in your data, because <span class="math inline">\(\lambda\)</span> (and Blomberg’s K - see below) has very low power to detect phylogenetic signal for less than 20-30 data points (see Freckleton et al. 2002 Am Nat). This means that using PGLS on small datasets is tricky - you almost always get ML <span class="math inline">\(\lambda\)</span> of zero but the <span class="math inline">\(\lambda\)</span> profile will show a pretty flat likelihood surface. Unfortunately people often forget to look at the <span class="math inline">\(\lambda\)</span> profile so erroneously conclude that there is no phylogenetic autocorrelation in their data.</p>
 <p><strong>Generally I’d say don’t use small datasets, however, this seems unavoidable in some fields.</strong> Therefore my advice is to (only in this situation!) ignore one of Freckleton’s deadly sins (2009, JEB) and report the results from an OLS model (equivalent of PGLS with <span class="math inline">\(\lambda\)</span> = 0) and also report the results from a PGLS model with <span class="math inline">\(\lambda\)</span> set to 1 (equivalent to independent contrasts). This problem comes up every year and current consensus among the PCM community is that this is best solution at present, if collecting more data is really not an option!</p>
 <p><strong>To set <span class="math inline">\(\lambda\)</span> to 1 you just replace “ML” with 1</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls3 &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), <span class="dt">data =</span> primate, <span class="dt">lambda =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.pgls3 &lt;-<span class="st"> </span><span class="kw">pgls</span>(<span class="kw">log</span>(GestationLen_d) ~<span class="st"> </span><span class="kw">log</span>(AdultBodyMass_g), 
+                    <span class="dt">data =</span> primate, <span class="dt">lambda =</span> <span class="dv">1</span>)</code></pre></div>
 </div>
 <div id="model-diagnostics-for-pgls-models" class="section level3">
 <h3><span class="header-section-number">5.3.2</span> Model diagnostics for PGLS models</h3>
 <p>You should always check model diagnostic plots whenever you fit a model in R to check that your data meet the assumptions of the model. The method for this in PGLS is the same for OLS, independent contrasts and PGLS models (though the graphs are slightly different). To get model diagnostic plots for PGLS:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">0</span>))
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))
 <span class="kw">plot</span>(model.pgls)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</code></pre></div>
 <p>Without going into the statistical details (and if you’ve no idea what these plots are for I suggest looking this up online or in a stats textbook), what you are looking for in these plots is:</p>
 <ol style="list-style-type: decimal">
@@ -582,10 +597,10 @@ primatedata &lt;-<span class="st"> </span><span class="kw">subset</span>(primate
 <p>K for log gestation length is 0.7758. As with <span class="math inline">\(\lambda\)</span> above, we’re interested in whether the value of K is significantly different from what we’d expect by chance. We can do this using the function <code>phylosignal</code>. This function randomly assigns the trait values to the species and then calculates K. This is repeated 1000 times (if <code>reps = 1000</code>) and the observed value of K is then compared to the randomized values to determine its significance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">phylosignal</span>(lngest[primatetree$tip.label], primatetree, <span class="dt">reps =</span> <span class="dv">1000</span>)</code></pre></div>
 <pre><code>##           K PIC.variance.obs PIC.variance.rnd.mean PIC.variance.P
-## 1 0.7757771      0.001660764            0.01190768    0.000999001
+## 1 0.7757771      0.001660764            0.01190882    0.000999001
 ##   PIC.variance.Z
-## 1       -2.22375</code></pre>
-<p>In this case the observed K is significantly higher than the random values of K (<code>PIC.variance.P</code> &lt; 0.001).</p>
+## 1      -2.289142</code></pre>
+<p>In this case the observed K is significantly higher than the random values of K (<code>PIC.variance.P</code> &lt; 0.001). (Click on the little black arrows to scroll left along the table if you’re looking at this in RStudio).</p>
 <p><em>Note this is a randomization test so your output here will not be identical to mine.</em></p>
 <hr />
 </div>

@@ -48,7 +48,9 @@ library(OUwie)
 magicaldata <- read.csv("magicalcreatures.csv")
 # Check data is loaded correctly
 str(magicaldata)
+```
 
+```{r}
 # Read in tree
 magicaltree <- read.nexus("magicaltree.nex") 
 # Check tree is loaded correctly
@@ -71,18 +73,18 @@ row.names(magicaldata) <- magicaldata$Species
 ```
 
 For some weird reason the `geiger` function we need (`treedata` see below) won't work if you input a dataset with variables that are characters i.e. words or letters. 
-Our taxonomic variable Species is a character so we need to exclude it from the data.
-Note for your own data you'd need to remove all character variables (or recode them as 0,12 etc.).
-We will do this by making a new dataset called magicaldata2.
+Our taxonomic variable `Species` is a character so we need to exclude it from the data.
+Note for your own data you'd need to remove all character variables (or recode them as 0,1,2 etc.).
+We will do this by making a new dataset called `magicaldata2`.
 
 ```{r}
 magicaldata2 <- magicaldata[, 2:5]
 ```
 
-Here the [ ] tells R we want to subset the dataset. 
-R data frames are always described by [X,Y] where X is rows and Y is columns. 
-So [1, 1] will select the entry in the first column and the first row of the data frame. 
-[, 2:2] selects all rows but only columns 2 to 5. 
+Here the `[ ]` tells R we want to subset the dataset. 
+R data frames are always described by `[X,Y]` where `X` is rows and `Y` is columns. 
+So `[1, 1]` will select the entry in the first column and the first row of the data frame. 
+`[, 2:5S]` selects all rows but only columns 2 to 5. 
 These are the columns containing our numeric variables.
 
 We then need to match the species in tree to those in the dataset as in the PGLS practical. 
@@ -101,7 +103,7 @@ For fitting models of evolution to continuous data we will use the `fitContinuou
 `fitContinuous` is a likelihood based method, so the output will give the maximum likelihood (ML) estimates of the parameters. 
 Bayesian methods are becoming preferred for these kinds of analyses and `fitContinuousMCMC` will perform these analyses. 
 However, due to time constraints we will not cover this function.
-As an example, let's look at the evolution of `log(body size)` in magical creatures. 
+As an example, let's look at the evolution of `log(BodySize_kg)` in magical creatures. 
 We'll fit three evolutionary models – the Brownian motion (BM) model, the Ornstein-Uhlenbeck (OU) model and the Early Burst (EB) model. 
 `fitContinuous` can also fit several other models. 
 For more details look at the help file by typing: `?fitContinuous`
@@ -130,7 +132,7 @@ The model has the following form:
 $dX(t) = -\alpha(X(t) - \mu) + \sigma dW(t)$
 
 Note that this model has two parameters in addition to those of the Brownian model, $\alpha$ and $\mu$.
-The parameter m is a long-term mean, and it is assumed that species evolve around this value. 
+The parameter $\mu$ is a long-term mean, and it is assumed that species evolve around this value. 
 $\alpha$ is the strength of evolutionary force that returns traits back towards the long-term mean if they evolve away from it. 
 $\alpha$ is sometimes referred to as the “rubber band” parameter because of the way it forces traits back towards $\mu$.
 The OU model was introduced to population genetics by Lande (1976) to model stabilizing selection in which the mean was recast as a fitness optimum on an adaptive landscape. 
@@ -141,7 +143,7 @@ It does not estimate $\mu$ but in this implementation of the model, $\mu$ is equ
 Note that if $\alpha$ is close to zero then evolution is approximately Brownian.
 
 ### The Early Burst (EB) model
-The Early Burst (EB) model (Harmon et al. 2010, also called the ACDC model; Blomberg et al. 2003) is a Brownian motion/random walk model where the rate of evolution decreases exponentially through time under the model:
+The Early Burst (EB) model (Harmon et al. 2010, also called the ACDC (accelerated/decelerated) model; Blomberg et al. 2003) is a Brownian motion/random walk model where the rate of evolution decreases exponentially through time under the model:
 
 $r(t) = \sigma^2e(at)$
 
@@ -269,6 +271,7 @@ OU <- fitContinuous(phy = mytree, dat = log(mydata[,"BodySize_kg"]), model = c("
 ```
 
 This example gives a warning message because `alpha` is over 1, so when we make the upper bound smaller the method ends up giving us this value instead because it's as close to 1 as we are allowing the model to go.
+
 
 ***
 

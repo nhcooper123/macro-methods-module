@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Practical notes for macro module" />
-  <meta name="github-repo" content="nhcooper123/TeachingMaterials/MSc_Museum/MacroModule" />
+  <meta name="github-repo" content="nhcooper123/macro-methods-module/MacroModule" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Methods in Macroecology and Macroevolution" />
@@ -396,14 +396,14 @@ myphotos</code></pre></div>
 <p>We can plot the coordinates for the <em>Pseudorca</em> (specimen 1) and the <em>Tursiops truncatus</em> (specimen 8) specimens as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(landmarks[, , <span class="dv">1</span>], <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">xlab =</span> <span class="st">&quot;X coordinate&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Y coordinate&quot;</span>)
 <span class="kw">points</span>(landmarks[, , <span class="dv">8</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">pch =</span> <span class="dv">16</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
 <p>You can see that although both filled the screen when you were digitising, <em>Tursiops</em> (in red) is much smaller. This is why this scaling step is so important.</p>
 </div>
 <div id="generalised-procrustes-superimposition-gpa" class="section level2">
 <h2><span class="header-section-number">8.6</span> Generalised Procrustes Superimposition (GPA)</h2>
 <p>If you plot all the landmarks at the same time you’ll notice it’s a bit of a mess.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(landmarks[, <span class="dv">2</span>, ] ~<span class="st"> </span>landmarks[, <span class="dv">1</span>, ], <span class="dt">xlab =</span> <span class="st">&quot;X coordinate&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Y coordinate&quot;</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-153-1.png" width="672" /></p>
 <p>The skulls vary in their placement in each photo - in some they cover the whole area, in others they are further forward or sideways, some are at a slight angle (rotation). Also as we already noted, there is a difference in the <em>size</em> of the skulls. Remember that we are interested in comparing shapes and shape is defined as <strong>the property of an object invariant under scaling, rotation, or translation</strong>. So if we want to compare shapes, we need to remove these differences.</p>
 <p>Luckily a number of solutions exist. We are going to use Generalised Procrustes Superimposition/Analysis (GPA). GPA is a way to remove rotation, translation and scaling differences among specimens so they can be compared. GPA translates all specimens to the origin (0,0,0), scales them to unit-centroid size, and optimally rotates them (using a least-squares criterion) until the coordinates of corresponding points align as closely as possible. The resulting aligned Procrustes coordinates represent the shape of each specimen.</p>
 <p>This is hard to explain in words, but there are a number of excellent graphical explanations in the references below.</p>
@@ -421,7 +421,7 @@ myphotos</code></pre></div>
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot the Procrusted coordinates </span>
 <span class="kw">plot</span>(gpa.landmarks)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
 <p>Note that now we have the average for each landmark as a large black point (the <strong>centroid</strong> - centroid just means the centre point of a sample of points/shapes), and the aligned landmarks for each specimen scattered around these in grey. You can see some landmarks are very variable, while others are more constant across our specimens.</p>
 <p><code>gpagen</code> not only outputs a nice plot of the specimens and their mean shape, but also the superimposed coordinates (<code>$coords</code>), the shape variables as principal components (<code>$pc.scores) and the centroid size of the specimens (</code>Csize`).</p>
 </div>
@@ -431,7 +431,7 @@ myphotos</code></pre></div>
 <p>PCA finds the axes of greatest variation in a dataset and removes correlations among variables. It does this while still preserving the distances between data points - i.e. it doesn’t distort variation in the data. The outputs of PCA are principal components scores, which we can think of as “shape variables”. These PC scores tend to be used in any further analysis and are <strong>independent components of shape variation</strong>. Note that PCA is essentially just a rotation of the data, nothing more complicated than that. Again I recommend checking out the graphical examples in the texts below to help with your understanding.</p>
 <p>Let’s extract principal components scores for our cetacean dataset using <code>plotTangentSpace</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pca.landmarks &lt;-<span class="st"> </span><span class="kw">plotTangentSpace</span>(gpa.landmarks$coords, <span class="dt">label =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-149-1.png" width="672" /> This produces a plot of the first two principal components (PC1 and PC2), with dotted lines at the origin and each specimen represented by a point. Point 1 is <em>Pseudorca</em>. Note that what we are now looking at is called a “shape space” or “morphospace”. <strong>Each point represents a shape</strong> not an individual landmark.</p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-155-1.png" width="672" /> This produces a plot of the first two principal components (PC1 and PC2), with dotted lines at the origin and each specimen represented by a point. Point 1 is <em>Pseudorca</em>. Note that what we are now looking at is called a “shape space” or “morphospace”. <strong>Each point represents a shape</strong> not an individual landmark.</p>
 <p>To help with interpretation, two grids are also plotted. These represent the shape at the points indicated by the arrows. These are called thin plate splines, because we imagine the landmarks for the average/centroid shape were engraved on a thin plate of metal, and then deformed to get to the shapes at the indicated points. The grid to the left shows lots of deformation, with a widening of the back of the skull, and a shortening of the rostrum. The grid to the right shows deformation with the tooth rows being closer together and some stretching at the front to enlarge the rostrum. Specimens with high PC1 scores look more like the right hand grid, specimens with low PC1 scores look more like the left hand grid.</p>
 <p>We can look at these grids individually, and for the other PC axes. The code below will show us the grids for the min and max PC1 and PC2. Note that I have included <code>mag = 2</code> which magnifies the differences two fold to make them easier to see.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make plotting window into 2 x 2 grid</span>
@@ -448,7 +448,7 @@ ref &lt;-<span class="st"> </span><span class="kw">mshape</span>(gpa.landmarks$c
 <span class="kw">plotRefToTarget</span>(ref, pca.landmarks$pc.shapes$PC1max, <span class="dt">mag =</span> <span class="dv">2</span>)
 <span class="kw">plotRefToTarget</span>(ref, pca.landmarks$pc.shapes$PC2min, <span class="dt">mag =</span> <span class="dv">2</span>)
 <span class="kw">plotRefToTarget</span>(ref, pca.landmarks$pc.shapes$PC2max, <span class="dt">mag =</span> <span class="dv">2</span>)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Put graphics parameters back to default settings</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))
 <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>))</code></pre></div>
@@ -566,7 +566,7 @@ mydata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(pca.land
 ##  $ PC6      : num  -7.16e-05 -8.64e-03 5.17e-03 -2.21e-03 4.33e-03 ...
 ##  $ PC7      : num  0.000387 -0.003641 0.001733 0.004996 -0.003752 ...
 ##  $ PC8      : num  0.00 2.08e-17 2.06e-17 1.39e-17 2.99e-17 ...
-##  $ body.size: num  95 106.4 128.8 58.7 122.1 ...
+##  $ body.size: num  92.6 90.6 100.8 107.6 125.8 ...
 ##  $ diet     : Factor w/ 2 levels &quot;fish&quot;,&quot;squid&quot;: 2 2 1 1 1 1 1 1</code></pre>
 </div>
 <div id="regression" class="section level2">
@@ -578,7 +578,7 @@ model1 &lt;-<span class="st"> </span><span class="kw">lm</span>(PC1 ~<span class
 <span class="co"># Assess assumptions</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))
 <span class="kw">plot</span>(model1)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))
 
 <span class="co"># Look at overall model significance</span>
@@ -586,9 +586,9 @@ model1 &lt;-<span class="st"> </span><span class="kw">lm</span>(PC1 ~<span class
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: PC1
-##           Df   Sum Sq   Mean Sq F value Pr(&gt;F)
-## body.size  1 0.001273 0.0012728  0.1082 0.7534
-## Residuals  6 0.070593 0.0117656</code></pre>
+##           Df   Sum Sq  Mean Sq F value Pr(&gt;F)
+## body.size  1 0.010695 0.010694   1.049 0.3453
+## Residuals  6 0.061172 0.010195</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at parameters and their significance</span>
 <span class="kw">summary</span>(model1)</code></pre></div>
 <pre><code>## 
@@ -596,21 +596,21 @@ model1 &lt;-<span class="st"> </span><span class="kw">lm</span>(PC1 ~<span class
 ## lm(formula = PC1 ~ body.size, data = mydata)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.22008 -0.01122  0.02632  0.04679  0.11526 
+##       Min        1Q    Median        3Q       Max 
+## -0.211260 -0.001332  0.014686  0.057142  0.088191 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept) -0.0463733  0.1461151  -0.317    0.762
-## body.size    0.0004597  0.0013977   0.329    0.753
+##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) -0.238915   0.235987  -1.012    0.350
+## body.size    0.002456   0.002398   1.024    0.345
 ## 
-## Residual standard error: 0.1085 on 6 degrees of freedom
-## Multiple R-squared:  0.01771,    Adjusted R-squared:  -0.146 
-## F-statistic: 0.1082 on 1 and 6 DF,  p-value: 0.7534</code></pre>
+## Residual standard error: 0.101 on 6 degrees of freedom
+## Multiple R-squared:  0.1488, Adjusted R-squared:  0.006947 
+## F-statistic: 1.049 on 1 and 6 DF,  p-value: 0.3453</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot</span>
 <span class="kw">plot</span>(PC1 ~<span class="st"> </span>body.size, <span class="dt">data =</span> mydata, <span class="dt">pch =</span> <span class="dv">16</span>)
 <span class="kw">abline</span>(model1)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-155-2.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-161-2.png" width="672" /></p>
 <ul>
 <li>Can you remember how to interpret these results?</li>
 <li>Why will your results be different to mine?</li>
@@ -626,9 +626,9 @@ model2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw"
 <span class="kw">anova</span>(model2)</code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
-##             Df   Pillai approx F num Df den Df Pr(&gt;F)
-## (Intercept)  1 0.000000  0.00000      2      5 1.0000
-## body.size    1 0.031784  0.08207      2      5 0.9224
+##             Df Pillai approx F num Df den Df Pr(&gt;F)
+## (Intercept)  1 0.0000   0.0000      2      5 1.0000
+## body.size    1 0.5961   3.6897      2      5 0.1037
 ## Residuals    6</code></pre>
 <ul>
 <li>Can you guess how to interpret these results given what you know about regression?</li>
@@ -643,7 +643,7 @@ model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(PC1 ~<span class
 <span class="co"># Assess assumptions</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))
 <span class="kw">plot</span>(model3)</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-157-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))
 
 <span class="co"># Look at overall model significance</span>
@@ -674,7 +674,7 @@ model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(PC1 ~<span class
 ## F-statistic: 2.418 on 1 and 6 DF,  p-value: 0.1709</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot</span>
 <span class="kw">plot</span>(PC1 ~<span class="st"> </span>diet, <span class="dt">data =</span> mydata, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;springgreen&quot;</span>))</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-157-2.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-163-2.png" width="672" /></p>
 <ul>
 <li>Can you remember how to interpret these results?</li>
 </ul>
@@ -700,7 +700,7 @@ model4 &lt;-<span class="st"> </span><span class="kw">manova</span>(<span class=
 ## Residuals  6</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot </span>
 <span class="kw">plot</span>(<span class="kw">cbind</span>(mydata$PC1,mydata$PC2) ~<span class="st"> </span>diet, <span class="dt">data =</span> mydata, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;springgreen&quot;</span>))</code></pre></div>
-<p><img src="macro-module_files/figure-html/unnamed-chunk-158-1.png" width="672" /></p>
+<p><img src="macro-module_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
 <ul>
 <li>Can you guess how to interpret these results given what you know about ANOVA?</li>
 </ul>

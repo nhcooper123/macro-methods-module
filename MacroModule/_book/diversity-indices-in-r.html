@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Practical notes for macro module" />
-  <meta name="github-repo" content="nhcooper123/TeachingMaterials/MSc_Museum/MacroModule" />
+  <meta name="github-repo" content="nhcooper123/macro-methods-module/MacroModule" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Methods in Macroecology and Macroevolution" />
@@ -513,14 +513,14 @@ pokemon.curve</code></pre></div>
 ## Accumulation method: random, with 1000 permutations
 ## Call: specaccum(comm = pokemon.matrix, method = &quot;random&quot;, permutations = 1000) 
 ## 
-##                                                                        
-## Sites    1.000000 2.000000 3.000000 4.000000 5.000000 6.000000 7.000000
-## Richness 3.145000 5.278000 6.736000 7.775000 8.461000 8.956000 9.303000
-## sd       1.921371 1.688066 1.296142 0.933406 0.762273 0.663705 0.606266
+##                                                                    
+## Sites    1.00000 2.000000 3.000000 4.000000 5.00000 6.0000 7.000000
+## Richness 3.10300 5.284000 6.786000 7.761000 8.45800 8.9490 9.295000
+## sd       1.96984 1.744244 1.277433 0.960626 0.74215 0.6579 0.615104
 ##                              
 ## Sites    8.000000 9.000000 10
-## Richness 9.565000 9.796000 10
-## sd       0.527307 0.403171  0</code></pre>
+## Richness 9.566000 9.814000 10
+## sd       0.538455 0.389301  0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot the curve</span>
 <span class="kw">plot</span>(pokemon.curve, <span class="dt">ci.type =</span> <span class="st">&quot;poly&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">ci.col =</span> <span class="st">&quot;lightblue&quot;</span>, 
      <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">ci.lty =</span> <span class="dv">0</span>, <span class="dt">xlab =</span> <span class="st">&quot;number of sites&quot;</span>, 
