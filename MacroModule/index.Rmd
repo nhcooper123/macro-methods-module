@@ -6,7 +6,7 @@ site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 link-citations: yes
-github-repo: nhcooper123/TeachingMaterials/MSc_Museum/MacroModule
+github-repo: nhcooper123/macro-methods-module/MacroModule
 description: "Practical notes for macro module"
 ---
 
@@ -25,8 +25,9 @@ The aim of this module is to introduce you to some of the cutting-edge methods b
 Rather than concentrating on learning theory through lectures, the module will introduce you to various ways we collect, analyse and interpret macro-scale data with a large emphasis on practical work, mostly using R. 
 
 ## Datasets and practical handouts
-All datasets and practical handouts are available on GitHub at [https://github.com/nhcooper123/TeachingMaterials/tree/master/MSc_Museum].
-It can be tricky to download data from GitHub if you don't know what you're doing and/or don't want to clone the entire repository so the materials are also available at this DropBox link: [].
+All datasets and practical handouts are available on GitHub at [https://github.com/nhcooper123/macro-methods-module].
+You can download the whole repository. 
+Scripts as `.Rmd` files and the data are all available in the `MacroModule` folder.
 
 ## How to use these materials
 It is possible to use these materials in a number of ways.
