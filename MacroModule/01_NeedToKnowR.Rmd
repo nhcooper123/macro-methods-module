@@ -3,8 +3,8 @@ title: "What you need to be able to do in R before you start"
 author: "Natalie Cooper (natalie.cooper@nhm.ac.uk)"
 date: "Feb 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 # What you need to be able to do in R before you start
@@ -170,6 +170,13 @@ This gives you the names of the columns.
 ```{r, eval = FALSE}
 primatedata
 ```
+
+now do square root of 10
+```{r}
+sqrt(10)
+
+```
+
 
 This will print out all of the data!
 

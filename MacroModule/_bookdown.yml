@@ -1,5 +1,5 @@
 book_filename: "macro-module"
+output_dir: "docs"
 language:
   ui:
     chapter_name: "Practical "
-output_dir: "docs"
