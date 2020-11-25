@@ -1,4 +1,6 @@
-# Macro Methods Module
+# Macro Methods Module 2016-2019
+
+A more up-to-date version of these materials exists from 2020 onwards. This is maintained as a legacy repo.
 
 This repository contains the course materials for my Masters level module on methods in macroecology and macroevolution. It is mainly focussed on phylogenetic comparative methods in R.
 
